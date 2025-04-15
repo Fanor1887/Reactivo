@@ -1,9 +1,19 @@
 {% extends "index.njk" %} {% block content %}
+
 <h1>{{ title }}</h1>
 <ul id="userList"></ul>
 
-<!-- Definir el endpoint de la API que el padre usará -->
-{% set typeEndpoint = "users" %}
-
 <h1>Fanor</h1>
+<script type="module">
+  fetch('/api/users')
+    .then((res) => res.json())
+    .then((users) => {
+      console.log('users', users);
+      users.forEach((user) => {
+        const li = document.createElement('li');
+        li.textContent = `${user.name} - ${user.age} años`;
+        document.getElementById('userList').appendChild(li);
+      });
+    });
+</script>
 {% endblock %}

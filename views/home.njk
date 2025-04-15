@@ -1,0 +1,9 @@
+{% extends "index.njk" %} {% block content %}
+<h1>{{ title }}</h1>
+<ul id="userList"></ul>
+
+<!-- Definir el endpoint de la API que el padre usará -->
+{% set typeEndpoint = "users" %}
+
+<h1>Fanor</h1>
+{% endblock %}

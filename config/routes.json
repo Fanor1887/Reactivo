@@ -1,0 +1,5 @@
+[
+  { "path": "/", "title": "Inicio", "template": "home.njk" },
+  { "path": "/about", "title": "Acerca de", "template": "about.njk" },
+  { "path": "/contact", "title": "Contacto", "template": "contact.njk" }
+]

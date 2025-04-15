@@ -2,10 +2,117 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>{{ titulo }}</title>
+    <title>{{ title }}</title>
   </head>
   <body>
-    <h1>{{ mensaje }}</h1>
-    <p>Este es un proyecto base con Express y Nunjucks 🚀</p>
+    <!-- Menú de rutas dinámicas -->
+    <nav>
+      <ul id="navbar">
+        {% for route in routes %}
+        <li>
+          <a href="{{ route.path }}">{{ route.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <!-- Contenido dinámico -->
+    <div
+      id="content"
+      class="contentMain"
+    >
+      {% block content %}
+      <!-- Aquí irá el contenido dinámico -->
+      {% endblock %}
+    </div>
+
+    <script>
+      // Hacer un fetch para obtener las rutas desde la API
+      fetch('/api/routes')
+        .then((response) => response.json())
+        .then((data) => {
+          const navbar = document.getElementById('navbar');
+          const contentContainer = document.getElementById('content');
+
+          // Inyectar las rutas en el menú solo si no se inyectaron antes
+          if (navbar.children.length === 0) {
+            data.routes.forEach((route) => {
+              const listItem = document.createElement('li');
+              const link = document.createElement('a');
+              link.href = route.path;
+              link.textContent = route.title;
+              link.onclick = (e) => {
+                e.preventDefault();
+                loadContent(route);
+              };
+              listItem.appendChild(link);
+              navbar.appendChild(listItem);
+            });
+          }
+
+          // Función para cargar el contenido de una ruta
+          let routeLogsDisplayed = {}; // Objeto para controlar si ya mostramos logs para cada ruta
+
+          // Función para cargar el contenido de una ruta
+          function loadContent(route) {
+            console.clear(); // Limpiar la consola antes de mostrar el nuevo log de la ruta
+
+            if (!routeLogsDisplayed[route.path]) {
+              console.log('Cargando contenido de la ruta:', route.title); // Solo mostrar este log una vez
+              routeLogsDisplayed[route.path] = true; // Marcar esta ruta como ya registrada
+            }
+
+            fetch(route.path)
+              .then((response) => response.text())
+              .then((templateContent) => {
+                contentContainer.innerHTML = templateContent;
+
+                // Ejecutar cualquier <script> que vino con el contenido
+                const scripts = contentContainer.querySelectorAll('script');
+                scripts.forEach((oldScript) => {
+                  const newScript = document.createElement('script');
+                  if (oldScript.src) {
+                    newScript.src = oldScript.src;
+                  } else {
+                    newScript.textContent = oldScript.textContent;
+                  }
+                  oldScript.replaceWith(newScript);
+                });
+              })
+              .catch((error) => {
+                contentContainer.innerHTML = `<p>Error al cargar el contenido de ${route.title}</p>`;
+                console.error('Error al cargar la plantilla:', error);
+              });
+          }
+
+          // Cargar el contenido de la primera ruta por defecto
+          if (data.routes.length > 0 && !contentContainer.innerHTML) {
+            loadContent(data.routes[0]);
+          }
+        })
+        .catch((error) => {
+          console.error('Error al cargar las rutas:', error);
+        });
+
+      // Obtener el tipo de endpoint desde el hijo, si se define
+      const typeEndpoint = '{{ typeEndpoint }}'; // Se pasa el valor desde el hijo
+
+      // Hacer el fetch para cargar los usuarios desde el endpoint dinámico
+      if (typeEndpoint) {
+        fetch(`/api/${typeEndpoint}`)
+          .then((res) => res.json())
+          .then((users) => {
+            console.log(typeEndpoint, users);
+            users.forEach((user) => {
+              const li = document.createElement('li');
+              li.textContent = `${user.name} - ${user.age} años`;
+              document.getElementById('userList').appendChild(li);
+            });
+          })
+          .catch((error) => {
+            console.error('Error al cargar los usuarios:', error);
+          });
+      }
+    </script>
   </body>
 </html>

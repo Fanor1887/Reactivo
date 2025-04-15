@@ -1,0 +1,12 @@
+{
+  "name": "Reactivo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Fanor1887/Reactivo.git",
+  "author": "Fanor1887 dasd <mejorsilen3300@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0",
+    "nunjucks": "^3.2.4"
+  }
+}

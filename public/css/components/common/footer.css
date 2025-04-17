@@ -1,0 +1,32 @@
+
+/* Enlaces del footer */
+.footer-links-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.footer-link {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Responsive para pantallas pequeñas */
+@media (max-width: 600px) {
+  .footer-content {
+    font-size: 12px;
+    padding: 15px;
+  }
+
+  .footer-links-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}

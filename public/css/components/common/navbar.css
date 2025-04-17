@@ -1,0 +1,44 @@
+
+.navbar-list {
+  list-style-type: none; /* Eliminar puntos de la lista */
+  margin: 0;
+  padding: 0;
+  display: flex; /* Flexbox para alinear los items horizontalmente */
+  gap: 20px; /* Espacio entre los elementos */
+}
+
+.navbar-item {
+  display: inline-block;
+}
+
+.navbar-link {
+  color: #ecf0f1; /* Color claro para los enlaces */
+  text-decoration: none; /* Eliminar subrayado */
+  font-size: 16px; /* Ajustar tamaño de fuente */
+  padding: 5px 10px; /* Espaciado alrededor del texto */
+  border-radius: 3px; /* Bordes redondeados */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+}
+
+.navbar-link:hover {
+  background-color: #3498db; /* Fondo azul cuando se pasa el mouse */
+  color: white; /* Texto blanco */
+}
+
+.navbar-link:active {
+  background-color: #2980b9; /* Fondo más oscuro al hacer click */
+}
+
+/* Media Query para Responsividad */
+@media (max-width: 768px) {
+  .navbar-list {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar-list.show {
+    display: flex;
+  }
+}

@@ -1,56 +1,52 @@
-// sidebar.js
+import { toggleSidebar } from '../../utils/index.js';
+import { loadContent } from '../../utils/storageUtils.js';
 
-import { loadContent } from '../../contentLoader.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadSidebar(); // Llama a la función que carga el sidebar
-});
-
-// Función para cargar el contenido del sidebar
-async function loadSidebar() {
+export function renderSidebar(routes) {
   const sidebar = document.getElementById('sidebar');
-  if (!sidebar) {
-    console.error('❌ No se encontró el sidebar en el DOM');
-    return;
-  }
+  sidebar.innerHTML = ''; // Limpiar
 
-  try {
-    const routes = await loadRoutes(); // Cargar las rutas desde la API
+  // 🔹 Toolbar del sidebar (parte superior)
+  const toolbar = document.createElement('div');
+  toolbar.className = 'sidebar-toolbar';
+  toolbar.textContent = 'Menú'; // Aquí puedes poner un logo, usuario, etc.
 
-    if (routes.length === 0) {
-      console.error('❌ No hay rutas disponibles para el sidebar');
-      return;
-    }
+  // 🔹 Contenedor de links (contenido del sidebar)
+  const nav = document.createElement('nav');
+  nav.className = 'sidebar-content';
 
-    // Poblar el sidebar con las rutas obtenidas
-    populateSidebar(routes, sidebar);
-  } catch (err) {
-    console.error('Error al cargar el sidebar:', err);
-  }
-}
+  const ul = document.createElement('ul');
+  ul.className = 'sidebar-list';
 
-// Función para cargar las rutas desde la API
-async function loadRoutes() {
-  const response = await fetch('/api/routes');
-  const data = await response.json();
-  return data.routes || [];
-}
-
-// Función para poblar el sidebar con las rutas
-function populateSidebar(routes, sidebar) {
   routes.forEach((route) => {
-    const div = document.createElement('div');
-    div.className = 'sidebar-item';
+    const li = document.createElement('li');
+    li.className = 'sidebar-item';
 
-    const link = document.createElement('a');
-    link.href = route.path;
-    link.textContent = route.title;
-    link.onclick = (e) => {
+    const a = document.createElement('a');
+    a.href = route.path;
+    a.textContent = route.title;
+    a.className = 'sidebar-link';
+
+    a.addEventListener('click', (e) => {
       e.preventDefault();
-      loadContent(route); // Cargar el contenido de la ruta al hacer clic en el link
-    };
+      loadContent(route);
+      //   if (window.innerWidth <= 768) {
+      toggleSidebar(); // Esto cierra el sidebar
+      //   }
+    });
 
-    div.appendChild(link);
-    sidebar.appendChild(div);
+    li.appendChild(a);
+    ul.appendChild(li);
   });
+
+  nav.appendChild(ul);
+
+  // 🔹 Footer del sidebar
+  const footer = document.createElement('div');
+  footer.className = 'sidebar-footer';
+  footer.textContent = '© 2025 Tu App';
+
+  // 🔹 Añadir todo al sidebar
+  sidebar.appendChild(toolbar);
+  sidebar.appendChild(nav);
+  sidebar.appendChild(footer);
 }

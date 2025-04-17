@@ -3,41 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <title>{{ title }}</title>
-    <!-- Incluimos los scripts -->
+
     <script
       type="module"
-      src="/js/init.js"
+      src="/js/main.js"
+      defer=""
     ></script>
-    <script
-      type="module"
-      src="/js/components/common/sidebar.js"
-    ></script>
+    <link
+      rel="stylesheet"
+      href="/css/styles.css"
+    />
     <!-- Importamos el archivo sidebar.js -->
   </head>
   <body>
+    <div id="sidebar"></div>
     <!-- Menú de rutas dinámicas -->
-    <nav>
-      <ul id="navbar">
+    <div id="main">
+      <nav id="navbar">
         <!-- Las rutas se cargarán dinámicamente aquí -->
-      </ul>
-    </nav>
+      </nav>
 
-    <!-- Contenedor para el sidebar -->
-    <div
-      id="sidebar"
-      class="sidebar"
-    >
-      <!-- El contenido del sidebar se cargará dinámicamente -->
-    </div>
+      <!-- Aquí centramos el spinner -->
+      <div id="content">
+        {% block content %}
+        <!-- Aquí irá el contenido dinámico -->
 
-    <!-- Contenido dinámico -->
-    <div
-      id="content"
-      class="contentMain"
-    >
-      {% block content %}
-      <!-- Aquí irá el contenido dinámico -->
-      {% endblock %}
+        {% endblock %}
+      </div>
+      <footer id="footer"></footer>
     </div>
   </body>
 </html>

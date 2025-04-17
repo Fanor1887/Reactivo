@@ -1,0 +1,111 @@
+@import './components/common/navbar.css';
+@import './components/common/content.css';
+@import './components/common/sidebar.css';
+@import './components/common/footer.css';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #002b57;
+  overflow: hidden;
+}
+
+/* Navbar */
+#navbar {
+  position: sticky;
+  top: 0;
+  background-color: #2c3e50;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 999;
+  transition: transform 0.3s ease;
+  border: 2px solid white;
+}
+
+/* Footer */
+#footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 999;
+  background-color: #2c3e50;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  border: 2px solid white;
+}
+
+/* Sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #2c3e50;
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+  z-index: 1000;
+  border: 2px solid white;
+}
+
+#sidebar.active {
+  transform: translateX(0);
+}
+
+/* Contenedor principal */
+#main {
+  transition: padding-left 0.3s ease;
+  padding-left: 0;
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgb(70, 0, 0);
+}
+
+/* Content */
+#content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #003c71;
+  padding: 10px;
+}
+
+/* Botón menú hamburguesa */
+.menu-toggle {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  margin-right: 15px;
+}
+/* Desktop: Sidebar desplaza el contenido */
+#main.shifted {
+  padding-left: 250px;
+}
+
+@media (max-width: 768px) {
+  /* Sidebar encima del contenido */
+  #sidebar {
+    transform: translateX(-100%);
+    width: 250px;
+    height: 100%;
+    z-index: 2000;
+  }
+
+  #sidebar.active {
+    transform: translateX(0);
+  }
+
+  /* No empujar el main en móvil */
+  #main.shifted {
+    padding-left: 0;
+  }
+}

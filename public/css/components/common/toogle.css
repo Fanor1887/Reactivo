@@ -1,0 +1,17 @@
+.menu-toggle {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  /* z-index: 1100; */
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+/* Animación sutil al hacer hover */
+.menu-toggle:hover {
+  transform: scale(1.1);
+}

@@ -1,0 +1,210 @@
+{
+  "routes": [
+    {
+      "path": "/home",
+      "title": "Inicio",
+      "view": "pages/publicPages/home.njk",
+      "private": false,
+      "subroutes": [
+        {
+          "path": "/specialites",
+          "title": "Especialidades",
+          "view": "pages/specialty.njk",
+          "roleAlias": ["admin", "doctor"],
+          "private": false
+        },
+        {
+          "path": "/specialites",
+          "title": "Servicios",
+          "view": "pages/specialty.njk",
+          "roleAlias": ["admin", "doctor"],
+          "private": false
+        },
+        {
+          "path": "/practices",
+          "title": "Prácticas",
+          "view": "pages/doctors.njk",
+          "roleAlias": ["admin", "doctor"],
+          "private": false
+        },
+        {
+          "path": "/doctors",
+          "title": "Médicos",
+          "view": "pages/doctors.njk",
+          "roleAlias": ["admin", "doctor"],
+          "private": false
+        }
+      ]
+    },
+    {
+      "path": "/about",
+      "title": "Sobre Nosotros",
+      "view": "pages/publicPages/about.njk",
+      "private": false
+    },
+    {
+      "path": "/contact",
+      "title": "Contacato",
+      "view": "pages/publicPages/contact.njk",
+      "private": false
+    },
+    {
+      "path": "/login",
+      "title": "Iniciar Sesion",
+      "view": "pages/publicPages/login.njk",
+      "private": false
+    },
+    {
+      "path": "/register",
+      "title": "Registrarse",
+      "view": "pages/publicPages/register.njk",
+      "private": false
+    },
+    {
+      "path": "/dashboard",
+      "title": "Dashboard",
+      "view": "pages/dashboard.njk",
+      "private": true,
+      "roleAlias": ["administrador", "doctor"]
+    },
+    {
+      "path": "/configuration",
+      "title": "Configuración",
+      "view": "pages/privatePages/config.njk",
+      "private": true,
+      "roleAlias": ["administrador", "doctor"],
+      "subroutes": [
+        {
+          "path": "/config/profile",
+          "title": "Perfil",
+          "view": "pages/privatePages/profile.njk",
+          "private": true,
+          "roleAlias": ["administrador", "doctor"],
+          "subroutes": [
+            {
+              "path": "/config/profile/upload",
+              "title": "Análisis General",
+              "view": "pages/privatePages/config/one.njk",
+              "private": true,
+              "roleAlias": ["administrador", "doctor"],
+              "subroutes": [
+                {
+                  "path": "/dashboard/overview/analytics/details",
+                  "title": "Detalles del Análisis",
+                  "view": "pages/privatePages/config/two.njk",
+                  "private": true,
+                  "roleAlias": ["administrador", "doctor"]
+                },
+                {
+                  "path": "/dashboard/overview/analytics/trends",
+                  "title": "Tendencias del Análisis",
+                  "view": "pages/privatePages/uploadProfile.njk",
+                  "private": true,
+                  "roleAlias": ["administrador", "doctor"]
+                }
+              ]
+            },
+            {
+              "path": "/dashboard/overview/summary",
+              "title": "Settings",
+              "view": "pages/privatePages/config/settings.njk",
+              "private": true,
+              "roleAlias": ["administrador", "doctor"]
+            }
+          ]
+        },
+        {
+          "path": "/dashboard/overview/personalization",
+          "title": "Personalization",
+          "view": "pages/privatePages/personalization.njk",
+          "private": true,
+          "roleAlias": ["administrador", "doctor"],
+          "subroutes": [
+            {
+              "path": "/dashboard/settings/preferences",
+              "title": "Preferencias",
+              "view": "dashboard_settings_preferences.njk",
+              "private": true,
+              "roleAlias": ["administrador"],
+              "subroutes": [
+                {
+                  "path": "/dashboard/settings/preferences/notifications",
+                  "title": "Notificaciones",
+                  "view": "dashboard_settings_preferences_notifications.njk",
+                  "private": true,
+                  "roleAlias": ["administrador"]
+                },
+                {
+                  "path": "/dashboard/settings/preferences/language",
+                  "title": "Idioma",
+                  "view": "dashboard_settings_preferences_language.njk",
+                  "private": true,
+                  "roleAlias": ["administrador"]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/roles",
+      "title": "Roles",
+      "view": "pages/role.njk",
+      "private": true,
+      "roleAlias": ["administrador", "doctor"]
+    },
+    {
+      "path": "/permissions",
+      "title": "Permisos",
+      "view": "pages/privatePages/permission.njk",
+      "private": true,
+      "roleAlias": ["administrador", "doctor"]
+    },
+
+    {
+      "path": "/accounts",
+      "title": "Cuentas",
+      "view": "pages/privatePages/account.njk",
+      "private": true,
+      "roleAlias": ["administrador", "doctor"]
+    },
+    {
+      "path": "/users",
+      "title": "Usuarios",
+      "view": "pages/privatePages/users/user.njk",
+      "roleAlias": ["administrador", "doctor"],
+      "private": true,
+      "subroutes": [
+        {
+          "path": "/users/admin",
+          "title": "Administrador",
+          "view": "pages/privatePages/users/admin.njk",
+          "private": true,
+          "roleAlias": ["administrador", "doctor"]
+        },
+        {
+          "path": "/users/doctor",
+          "title": "Doctores",
+          "view": "pages/doctors.njk",
+          "private": false,
+          "roleAlias": ["administrador", "doctor"]
+        }
+      ]
+    },
+    {
+      "path": "/services",
+      "title": "Servicios",
+      "view": "pages/service.njk",
+      "roleAlias": ["administrador", "doctor"],
+      "private": true
+    },
+    {
+      "path": "/specialites",
+      "title": "Especialidades",
+      "view": "pages/specialty.njk",
+      "roleAlias": ["administrador", "doctor"],
+      "private": true
+    }
+  ]
+}

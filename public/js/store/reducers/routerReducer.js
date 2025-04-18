@@ -1,6 +1,7 @@
 const initialState = {
   routes: [],
-  currentRoute: '/',
+  currentRoute:
+    localStorage.getItem('currentRoute') || window.location.pathname,
 };
 
 export default function routerReducer(state = initialState, action) {

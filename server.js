@@ -1,12 +1,20 @@
 import express from 'express';
 import nunjucks from 'nunjucks';
 import path from 'path';
-import fs from 'fs';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import apiRoutes from './routes/apiRoutes.js';
+import pageRoutes from './routes/pageRoutes.js';
+import { connectDB } from './config/db.js';
+import sessionConfig from './config/sessionConfig.js';
+import authRoutes from './routes/authRoutes.js';
+import profileRoutes from './routes/profileRoutes.js'
+import accountRoutes from './routes/accountRoutes.js'
+import crudRoutes from './routes/crudRoutes.js';
+// import setupWebSocket from './webSocket.js';
+// import http from 'http';
 
-// Cargar variables de entorno
 dotenv.config();
 
 // Crear una instancia de Express
@@ -16,56 +24,38 @@ const port = process.env.PORT || 3000;
 // Definir __dirname en un entorno ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
+app.use(sessionConfig());
 // Middleware para servir archivos estáticos desde la carpeta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Middleware personalizado para registrar cada solicitud de archivo estático
-app.use((req, res, next) => {
-  if (req.url.startsWith('/public')) {
-    console.log(`Archivo solicitado: ${req.url}`);
-  }
-  next();
-});
-
 app.use(express.json());
 app.use(cors()); // Permitir todas las peticiones CORS
+connectDB();
 
-// Configuración de Nunjucks
 nunjucks.configure(path.join(__dirname, 'views'), {
   autoescape: true,
   express: app,
 });
-
-// Leer rutas desde el archivo JSON de configuración
-const routes = JSON.parse(
-  fs.readFileSync(path.join(__dirname, 'config/routes.json'), 'utf-8')
-);
-
-// API para obtener las rutas
-app.get('/api/routes', (req, res) => {
-  console.log('Solicitando las rutas...');
-  res.json({ routes: routes.map(({ template, ...rest }) => rest) });
+app.get('/', (req, res) => {
+  if (req.session && req.session.user) {
+    return res.redirect('/dashboard');
+  } else {
+    return res.redirect('/home');
+  }
 });
-
+app.use('/api',  apiRoutes,
+  authRoutes,
+  profileRoutes,
+  accountRoutes,
+  crudRoutes); // API de rutas
+app.use(pageRoutes); // Rutas dinámicas
 // API para obtener usuarios
-const getUsers = () => {
-  const filePath = path.join(__dirname, 'data/users.json');
-  return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-};
-
-app.get('/api/users', (req, res) => {
-  const users = getUsers();
-  console.log('Usuarios cargados:', users);
-  res.json(users);
-});
-
-// Crear rutas dinámicas basadas en el archivo de rutas
-routes.forEach(({ path: routePath, title, template }) => {
-  console.log(`Creando ruta: ${routePath} con plantilla: ${template}`);
-  app.get(routePath, (req, res) => {
-    res.render(template, { title });
-  });
+app.use((req, res) => {
+  if (req.headers.accept?.includes('application/json')) {
+    return res.status(404).json({ error: 'Ruta no encontrada' });
+  }
+  res.status(404).send('<h1>404 - Página no encontrada</h1>');
 });
 
 // Servir el servidor

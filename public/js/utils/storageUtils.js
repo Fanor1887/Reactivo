@@ -1,4 +1,5 @@
 import { hideSpinner, showSpinner } from '../components/common/spinner.js';
+import { baseEndpoint } from '../config/apiEndpoint.js';
 import { store } from '../store/index.js';
 
 // Función para desplazar la vista a un elemento con un hash
@@ -37,20 +38,18 @@ export const executeScripts = (container) => {
 };
 
 export async function loadRoutes() {
-  const response = await fetch('/api/routes');
+  const response = await fetch(`${baseEndpoint.routeEndpoint}`);
+
   const data = await response.json();
+  console.log('routesApi', data);
   return data.routes || [];
 }
-// Función para cargar contenido con spinner
-export async function loadContent(route) {
+export async function loadContent(route, addToHistory = true) {
   const contentContainer = document.getElementById('content');
 
   // Ocultar el contenido y deshabilitar interacciones
   contentContainer.style.opacity = '0';
-
   contentContainer.style.pointerEvents = 'none';
-
-  // Cambiar el fondo del contenedor mientras carga
 
   // Mostrar el spinner
   store.dispatch({ type: 'SHOW_SPINNER' });
@@ -60,37 +59,55 @@ export async function loadContent(route) {
     type: 'SET_ROUTE',
     payload: route.path,
   });
+  localStorage.setItem('currentRoute', route.path);
 
   try {
     // Obtener el HTML como texto
-    const html = await fetchHtml(route.path);
+    const response = await fetch(route.path);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-    // Convertir el texto HTML a un documento DOM
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
+    const text = await response.text();
 
-    // Buscar el div con id "content" en la respuesta
-    const content = doc.querySelector('#content');
-    if (content) {
-      // Reemplazar el contenido actual por el nuevo
-      contentContainer.innerHTML = content.innerHTML;
+    // Crear un contenedor temporal para parsear el HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = text;
+
+    // Reemplazar el contenido del contenedor con el nuevo contenido
+    const newContent = tempDiv.querySelector('#content');
+    if (newContent) {
+      contentContainer.innerHTML = newContent.innerHTML;
     } else {
       throw new Error(
         '❌ No se encontró el elemento #content en la respuesta.'
       );
     }
 
-    // Ejecutar scripts del nuevo contenido
-    executeScripts(contentContainer);
+    // Actualizar el título de la página
+    document.title = tempDiv.querySelector('title')?.innerText || route.path;
+
+    // Ejecutar los scripts del nuevo contenido
+    executeScripts(tempDiv);
+
+    // Si `addToHistory` es verdadero, agregar la nueva ruta al historial
+    if (addToHistory) {
+      history.pushState({ url: route.path }, '', route.path);
+    }
+
+    // Comprobar si hay un hash en la URL y desplazarse hasta ese elemento
+    const hashIndex = route.path.indexOf('#');
+    if (hashIndex !== -1) {
+      const hash = route.path.substring(hashIndex);
+      scrollToHash(hash);
+    }
   } catch (error) {
-    // Mostrar mensaje de error
     contentContainer.innerHTML = `<p>Error al cargar el contenido de <strong>${route.title}</strong>.</p>`;
     console.error('Error al cargar contenido:', error);
   } finally {
     // Ocultar el spinner después de un segundo
     setTimeout(() => {
       contentContainer.style.transition = 'opacity 0.5s ease';
-
       store.dispatch({ type: 'HIDE_SPINNER' });
     }, 1000);
 
@@ -102,7 +119,7 @@ export async function loadContent(route) {
   }
 }
 
-async function fetchHtml(path) {
-  const response = await fetch(path);
-  return response.text();
-}
+// async function fetchHtml(path) {
+//   const response = await fetch(path);
+//   return response.text();
+// }

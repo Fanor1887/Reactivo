@@ -1,3 +1,4 @@
+import { store } from '../../store/index.js';
 import { toggleSidebar } from '../../utils/index.js';
 import { loadContent } from '../../utils/storageUtils.js';
 
@@ -28,7 +29,9 @@ export function renderSidebar(routes) {
 
     a.addEventListener('click', (e) => {
       e.preventDefault();
+
       loadContent(route);
+
       //   if (window.innerWidth <= 768) {
       toggleSidebar(); // Esto cierra el sidebar
       //   }

@@ -1,4 +1,3 @@
-import { hideSpinner, showSpinner } from '../components/common/spinner.js';
 import { rootReducer } from './combine.js';
 
 // Estado inicial y suscripción a los cambios del store
@@ -24,18 +23,3 @@ export const store = {
     };
   },
 };
-
-// Suscripción al store para mostrar/ocultar el spinner
-// store.subscribe(() => {
-//   const state = store.getState();
-
-//   console.log('Estado de carga (loading):', state.ui?.loading); // Verifica el estado
-
-//   if (state.ui?.loading) {
-//     console.log('Mostrar spinner');
-//     showSpinner();
-//   } else {
-//     console.log('Ocultar spinner');
-//     hideSpinner();
-//   }
-// });

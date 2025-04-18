@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "node --watch server.js"
   },
   "repository": "https://github.com/Fanor1948-1956/nunjucks.git",
   "author": "Fanoro1956 Choque Aguirre <fanoro1956@gmail.com>",

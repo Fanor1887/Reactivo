@@ -1,7 +1,6 @@
 // public/config.js
 window.env = {
-  BASE_URL:
-    'https://7000-fanor19481956-nunjucks-qg1abi8niik.ws-us118.gitpod.io',
+  BASE_URL: 'https://7000-fanor1887-reactivo-7ts4qvocxf9.ws-us118.gitpod.io',
   API_URL: 'https://api.example.com',
   DEBUG: true,
   NODE_ENV: 'development',

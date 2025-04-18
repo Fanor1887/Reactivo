@@ -1,0 +1,84 @@
+import { loginFailure, loginSuccess } from '../actions/authActions.js';
+import { store } from '../store/index.js';
+import { loadContent, loadRoutes } from '../utils/storageUtils.js';
+import { renderSidebar } from '../components/common/sidebar.js';
+import { renderNavbar } from '../components/common/navbar.js';
+
+export const asyncAuth = async (values) => {
+  try {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      store.dispatch(loginFailure(data.error));
+      return { success: false, error: data.error };
+    }
+
+    // ✅ Guardar sesión
+    const userRoles = data.user.roles || [];
+    localStorage.setItem('userRoles', JSON.stringify(userRoles));
+    localStorage.setItem('isAuthenticated', data.isAuthenticated);
+
+    store.dispatch(loginSuccess(data.user));
+
+    // ✅ Cargar todas las rutas desde el backend o archivo
+    const allRoutes = await loadRoutes();
+
+    // ✅ Filtrar rutas por roles
+    const filteredRoutes = allRoutes.filter((route) => {
+      return (
+        !route.roles || route.roles.some((role) => userRoles.includes(role))
+      );
+    });
+
+    // ✅ Actualizar store con rutas nuevas
+    store.dispatch({ type: 'SET_ROUTES', payload: filteredRoutes });
+
+    // ✅ Renderizar sidebar actualizado
+    renderSidebar(filteredRoutes);
+    renderNavbar(filteredRoutes);
+
+    // ✅ Redirigir a la ruta inicial (ej: dashboard)
+    const initialRoute =
+      filteredRoutes.find((r) => r.path === '/dashboard') || filteredRoutes[0];
+    store.dispatch({ type: 'SET_ROUTE', payload: initialRoute.path });
+    localStorage.setItem('currentRoute', initialRoute.path);
+    console.log('initialRoute', initialRoute);
+    // ✅ Cargar contenido
+    await loadContent(initialRoute, true);
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error de conexión:', error);
+    store.dispatch(loginFailure('Error de conexión'));
+    return { success: false, error: 'Error de conexión' };
+  }
+};
+
+export async function logoutFromAPI() {
+  try {
+    console.log('Saliendo de la sesión...');
+
+    const response = await apiFetch('/api/logout', 'POST');
+    console.log('Respuesta API logout:', response);
+
+    if (response?.success) {
+      logoutDispatch();
+
+      // Carga la página de login sin recargar todo el sitio
+      await loadContent('/login', true);
+
+      // Limpiar el estado relacionado con la sesión
+    } else {
+      throw new Error(response?.error || 'No se pudo salir de la sesión.');
+    }
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error);
+    return false;
+  }
+}

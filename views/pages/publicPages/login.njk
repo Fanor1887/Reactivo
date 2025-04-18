@@ -1,0 +1,111 @@
+{% extends "index.njk" %} {% block content %}
+
+<!-- Contenedor para el formulario -->
+<div id="formContainer"></div>
+
+<p
+  id="errorMessage"
+  style="color: red; display: none"
+></p>
+
+<script type="module">
+  // Importar funciones necesarias
+  import { asyncAuth } from '/js/api/asyncAuth.js'; // Ruta al nuevo archivo asyncAuth.js
+  import { CreateButton } from '/js/components/controls/button.js';
+  import { CreateInput } from '/js/components/controls/input.js';
+  import { Form } from '/js/components/controls/form.js';
+  import { CreateCard } from '/js/components/custom/card.js';
+  import useForm from '/js/hooks/useForm.js';
+
+  // Valores iniciales del formulario
+  const initialValues = {
+    email: '',
+    password: '',
+  };
+
+  // Función de validación
+  const validate = (values) => {
+    const errors = {};
+
+    if (!values.email) {
+      errors.email = 'El email es requerido';
+    } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+      errors.email = 'El email no es válido';
+    }
+
+    if (!values.password) {
+      errors.password = 'La contraseña es requerida';
+    } else if (values.password.length < 6) {
+      errors.password = 'La contraseña debe tener al menos 6 caracteres';
+    }
+
+    return errors;
+  };
+
+  // Función para manejar el envío del formulario
+  const onSubmit = async (values) => {
+    const result = await asyncAuth(values); // Llamada a asyncAuth
+
+    if (!result.success) {
+      document.getElementById('errorMessage').textContent = result.error;
+      document.getElementById('errorMessage').style.display = 'block';
+    }
+  };
+
+  // Inicializar el formulario
+  const formState = useForm(initialValues, validate, onSubmit);
+
+  // Crear campos de entrada
+  const emailInput = CreateInput(
+    'email',
+    'email',
+    'Email',
+    (value) => formState.handleChange({ target: { name: 'email', value } }),
+    formState.errors.email
+  );
+
+  const passwordInput = CreateInput(
+    'password',
+    'password',
+    'Contraseña',
+    (value) => formState.handleChange({ target: { name: 'password', value } }),
+    formState.errors.password
+  );
+
+  // Suscribirse a cambios en los errores
+  formState.subscribeErrors((errors) => {
+    emailInput.updateError(errors.email || '');
+    passwordInput.updateError(errors.password || '');
+  });
+
+  // Crear el botón de inicio de sesión
+  const loginButton = CreateButton('Iniciar Sesión', {
+    backgroundColor: '#28a745',
+    padding: '12px 24px',
+    fontSize: '18px',
+  });
+
+  // Crear el formulario
+  const loginForm = Form({
+    className: 'login-form',
+    onSubmit: formState.handleSubmit,
+    children: [emailInput.container, passwordInput.container, loginButton],
+  });
+
+  // Crear la tarjeta con el formulario como cuerpo
+  const loginCard = CreateCard(
+    {
+      cardHeader: 'Iniciar Sesión',
+      cardBody: loginForm,
+    },
+    {
+      card: {
+        width: '450px',
+      },
+    }
+  );
+
+  // Agregar la tarjeta al contenedor
+  document.getElementById('formContainer').appendChild(loginCard.cardContainer);
+</script>
+{% endblock %}

@@ -1,0 +1,7 @@
+authtoken: 2cQPG4G6fzuNKLua5Jj4OEtey9C_3sZ7Y49Y9nbjYf2FU2fwq
+tunnels:
+  myapp:
+    proto: http
+    addr: 7000
+    inspect: false
+    bind_tls: true

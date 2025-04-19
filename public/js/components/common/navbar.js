@@ -1,23 +1,33 @@
 import { toggleSidebar } from '../../utils/index.js';
 import { loadContent } from '../../utils/storageUtils.js';
 
-/**
- * Renderiza una navbar genérica con base en rutas.
- * @param {Array} routes - Rutas a renderizar.
- * @param {Object} options - Opcional. Funciones de callback o clases.
- */
-export function renderNavbar(
-  routes = [],
-  options = {},
-  containerId = 'navbar'
-) {
-  const { onItemClick, className = '' } = options;
+let lastRenderedRoutes = [];
 
-  const navbar = document.getElementById(containerId);
+export function subscribeNavbar(store) {
+  let unsubscribe;
+
+  const render = () => {
+    const { routes } = store.getState().router;
+
+    // Evitar render si las rutas no cambiaron
+    if (JSON.stringify(routes) === JSON.stringify(lastRenderedRoutes)) return;
+
+    lastRenderedRoutes = routes;
+    renderNavbar(routes);
+  };
+
+  unsubscribe = store.subscribe(render);
+  render(); // render inicial
+
+  return unsubscribe; // por si necesitas desmontar luego
+}
+
+export function renderNavbar(routes) {
+  console.log(routes);
+  const navbar = document.getElementById('navbar');
   if (!navbar) return;
 
   navbar.innerHTML = '';
-  navbar.className = `navbar-container ${className}`;
 
   const leftContainer = document.createElement('div');
   leftContainer.className = 'navbar-left';
@@ -37,7 +47,7 @@ export function renderNavbar(
 
     const a = document.createElement('a');
     a.href = route.path;
-    a.textContent = route.title || route.path;
+    a.textContent = route.title;
     a.className = 'navbar-link';
 
     a.addEventListener('click', (e) => {
@@ -52,12 +62,4 @@ export function renderNavbar(
 
   navbar.appendChild(leftContainer);
   navbar.appendChild(ul);
-}
-
-// Función para suscribirse al store y actualizar el navbar cuando las rutas cambien
-export function subscribeNavbar(store) {
-  store.subscribe(() => {
-    const { routes } = store.getState().router;
-    renderNavbar(routes); // Re-renderizar el navbar con las rutas actualizadas
-  });
 }

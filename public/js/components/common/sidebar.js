@@ -65,9 +65,3 @@ export function renderSidebar(routes) {
   sidebar.appendChild(nav);
   sidebar.appendChild(footer);
 }
-export function subscribeSidebar(store) {
-  store.subscribe(() => {
-    const { routes } = store.getState().router;
-    renderSidebar(routes); // Re-renderizar el sidebar con las rutas actualizadas
-  });
-}

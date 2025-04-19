@@ -1,5 +1,7 @@
 import { loadContent, loadRoutes } from './utils/storageUtils.js';
 import { store } from './store/index.js';
+import { renderSidebar } from './components/common/sidebar.js';
+import { setupFooter } from './components/common/footer.js';
 
 let unsubscribe;
 
@@ -13,7 +15,8 @@ export async function init() {
     }
 
     store.dispatch({ type: 'SET_ROUTES', payload: routes });
-
+    renderSidebar(routes); // Sidebar se suscribe al store
+    setupFooter();
     // 🚦 Ruta actual
     const currentRoute = window.location.pathname;
     const route = routes.find((r) => r.path === currentRoute) || routes[0];

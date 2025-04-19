@@ -4,6 +4,7 @@ import { loadContent, loadRoutes } from '../utils/storageUtils.js';
 import { subscribeSidebar } from '../components/common/sidebar.js';
 import { subscribeNavbar } from '../components/common/navbar.js';
 import { apiFetch } from './apiFetch.js';
+import { subscribeMenu } from '../render/menuRenderer.js';
 
 export const asyncAuth = async (values) => {
   try {
@@ -41,8 +42,7 @@ export const asyncAuth = async (values) => {
     store.dispatch({ type: 'SET_ROUTES', payload: filteredRoutes });
 
     // ✅ Renderizar sidebar actualizado
-    subscribeSidebar(filteredRoutes);
-    subscribeNavbar(filteredRoutes);
+    subscribeMenu(filteredRoutes);
 
     // ✅ Redirigir a la ruta inicial (ej: dashboard)
     const initialRoute =
@@ -80,8 +80,7 @@ export async function logoutFromAPI() {
       const allRoutes = await loadRoutes();
       const publicRoutes = allRoutes.filter((route) => !route.roles);
 
-      subscribeNavbar(publicRoutes);
-      subscribeSidebar(publicRoutes);
+      subscribeMenu(publicRoutes);
       const loginRoute = allRoutes.find((r) => r.path === '/login') || {
         path: '/login',
         title: 'Login',

@@ -43,13 +43,11 @@
 }
 
 .sidebar-link {
-  display: block;
-  padding: 0.6rem 1rem;
-  background-color: #2d3748;
-  color: #e5e7eb;
+  flex: 1; /* Ocupa todo el espacio disponible */
   text-decoration: none;
-  border-radius: 6px;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  color: inherit;
+  padding: 0.5rem 0.75rem;
+  display: block;
 }
 
 .sidebar-link:hover {

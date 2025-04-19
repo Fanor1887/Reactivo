@@ -1,0 +1,54 @@
+.menu-link-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  gap: 0.5rem;
+}
+
+.arrow-toggle {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-sublist,
+.navbar-sublist {
+  display: none;
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.sidebar-sublist.open,
+.navbar-sublist.open {
+  display: block;
+  animation: fadeIn 0.3s ease-in;
+}
+.menu-link-wrapper:hover {
+  background-color: #1e3a8a;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sidebar-link.active,
+.navbar-link.active {
+  background-color: #0d6efd;
+  color: white;
+  font-weight: bold;
+  border-radius: 0.3rem;
+}

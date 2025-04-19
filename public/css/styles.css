@@ -3,6 +3,7 @@
 @import './components/common/sidebar.css';
 /* @import './components/common/footer.css'; */
 @import './components/custom/appBar.css';
+@import './components/custom/menuWraper.css';
 
 html,
 body {

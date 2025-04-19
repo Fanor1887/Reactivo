@@ -1,8 +1,9 @@
 import { loadContent, loadRoutes } from './utils/storageUtils.js';
 import { store } from './store/index.js';
-import { subscribeSidebar } from './components/common/sidebar.js';
+// import { subscribeSidebar } from './components/common/sidebar.js';
+// import { subscribeNavbar } from './components/common/navbar.js';
 import { setupFooter } from './components/common/footer.js';
-import { subscribeNavbar } from './components/common/navbar.js';
+import { subscribeMenu } from './render/menuRenderer.js';
 
 let unsubscribe;
 
@@ -16,9 +17,9 @@ export async function init() {
     }
 
     store.dispatch({ type: 'SET_ROUTES', payload: routes });
-    subscribeNavbar(routes); // Navbar se suscribe al store
-    subscribeSidebar(routes); // Sidebar se suscribe al store
-
+    // subscribeNavbar(routes); // Navbar se suscribe al store
+    // subscribeSidebar(routes); // Sidebar se suscribe al store
+subscribeMenu(routes)
     setupFooter();
     // 🚦 Ruta actual
     const currentRoute = window.location.pathname;

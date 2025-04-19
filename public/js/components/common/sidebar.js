@@ -37,17 +37,16 @@ export function renderSidebar(routes) {
     a.addEventListener('click', async (e) => {
       e.preventDefault();
 
-      await loadContent(route);
-
       // Guardar la ruta activa
       store.dispatch({ type: 'SET_ROUTE', payload: route.path });
       localStorage.setItem('currentRoute', route.path);
 
       // Re-renderizar para aplicar el "active"
       renderSidebar(routes);
+      await loadContent(route);
 
       if (window.innerWidth <= 768) {
-        toggleSidebar(); // Esto cierra el sidebar
+        toggleSidebar('sidebar'); // Esto cierra el sidebar
       }
     });
 
@@ -64,4 +63,9 @@ export function renderSidebar(routes) {
   sidebar.appendChild(toolbar);
   sidebar.appendChild(nav);
   sidebar.appendChild(footer);
+}
+export function subscribeSidebar(routes) {
+  store.subscribe(() => {
+    renderSidebar(routes); // Re-renderizar el sidebar con las rutas actualizadas
+  });
 }

@@ -1,13 +1,8 @@
-import {
-  loginFailure,
-  loginSuccess,
-  logout,
-  logoutDispatch,
-} from '../actions/authActions.js';
+import { loginFailure, loginSuccess, logout } from '../actions/authActions.js';
 import { store } from '../store/index.js';
 import { loadContent, loadRoutes } from '../utils/storageUtils.js';
-import { renderSidebar } from '../components/common/sidebar.js';
-import { renderNavbar } from '../components/common/navbar.js';
+import { subscribeSidebar } from '../components/common/sidebar.js';
+import { subscribeNavbar } from '../components/common/navbar.js';
 import { apiFetch } from './apiFetch.js';
 
 export const asyncAuth = async (values) => {
@@ -46,13 +41,14 @@ export const asyncAuth = async (values) => {
     store.dispatch({ type: 'SET_ROUTES', payload: filteredRoutes });
 
     // ✅ Renderizar sidebar actualizado
-    renderSidebar(filteredRoutes);
-    renderNavbar(filteredRoutes);
+    subscribeSidebar(filteredRoutes);
+    subscribeNavbar(filteredRoutes);
 
     // ✅ Redirigir a la ruta inicial (ej: dashboard)
     const initialRoute =
       filteredRoutes.find((r) => r.path === '/dashboard') || filteredRoutes[0];
     store.dispatch({ type: 'SET_ROUTE', payload: initialRoute.path });
+
     localStorage.setItem('currentRoute', initialRoute.path);
     console.log('initialRoute', initialRoute);
     // ✅ Cargar contenido
@@ -84,8 +80,8 @@ export async function logoutFromAPI() {
       const allRoutes = await loadRoutes();
       const publicRoutes = allRoutes.filter((route) => !route.roles);
 
-      renderNavbar(publicRoutes);
-      renderSidebar(publicRoutes);
+      subscribeNavbar(publicRoutes);
+      subscribeSidebar(publicRoutes);
       const loginRoute = allRoutes.find((r) => r.path === '/login') || {
         path: '/login',
         title: 'Login',

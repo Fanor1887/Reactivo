@@ -1,15 +1,3 @@
-#nav-test {
-  position: sticky;
-  top: 0;
-  background-color: #0b6ed1;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 999;
-  transition: transform 0.3s ease;
-  border: 2px solid white;
-}
 .navbar-list {
   list-style-type: none; /* Eliminar puntos de la lista */
   margin: 0;
@@ -18,17 +6,18 @@
   gap: 20px; /* Espacio entre los elementos */
 }
 
-.navbar-item {
+/* .navbar-item {
   display: inline-block;
-}
+} */
 
 .navbar-link {
-  color: #ecf0f1; /* Color claro para los enlaces */
-  text-decoration: none; /* Eliminar subrayado */
-  font-size: 16px; /* Ajustar tamaño de fuente */
-  padding: 5px 10px; /* Espaciado alrededor del texto */
-  border-radius: 3px; /* Bordes redondeados */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+  display: block;
+  padding: 0.6rem 1rem;
+  background-color: #2d3748;
+  color: #e5e7eb;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .navbar-link:hover {
@@ -37,7 +26,10 @@
 }
 
 .navbar-link:active {
-  background-color: #2980b9; /* Fondo más oscuro al hacer click */
+  background-color: #3b82f6;
+  color: white;
+  font-weight: bold;
+  border-left: 4px solid white;
 }
 
 /* Media Query para Responsividad */

@@ -1,7 +1,8 @@
 import { loadContent, loadRoutes } from './utils/storageUtils.js';
 import { store } from './store/index.js';
-import { renderSidebar } from './components/common/sidebar.js';
+import { subscribeSidebar } from './components/common/sidebar.js';
 import { setupFooter } from './components/common/footer.js';
+import { subscribeNavbar } from './components/common/navbar.js';
 
 let unsubscribe;
 
@@ -15,7 +16,9 @@ export async function init() {
     }
 
     store.dispatch({ type: 'SET_ROUTES', payload: routes });
-    renderSidebar(routes); // Sidebar se suscribe al store
+    subscribeNavbar(routes); // Navbar se suscribe al store
+    subscribeSidebar(routes); // Sidebar se suscribe al store
+
     setupFooter();
     // 🚦 Ruta actual
     const currentRoute = window.location.pathname;
@@ -23,7 +26,7 @@ export async function init() {
 
     store.dispatch({ type: 'SET_ROUTE', payload: route.path });
     localStorage.setItem('currentRoute', route.path);
-    loadContent(route, false);
+    // loadContent(route, false);
   } catch (err) {
     console.error('❌ Error en init():', err);
   }

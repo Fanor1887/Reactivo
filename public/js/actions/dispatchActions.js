@@ -43,9 +43,7 @@ export function updateItems (items) {
 }
 
 // Función para hacer logout
-export function logoutDispatch () {
-  store.dispatch({ type: 'LOGOUT' })
-}
+
 export function setApiEndpoint (apiEndpoint) {
   store.dispatch({ type: 'SET_API_ENDPOINT', payload: apiEndpoint })
 }

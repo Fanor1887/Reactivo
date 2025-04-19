@@ -1,5 +1,3 @@
-import { renderNavbar } from './components/common/navbar.js';
-import { renderSidebar } from './components/common/sidebar.js';
 import { loadContent, loadRoutes } from './utils/storageUtils.js';
 import { store } from './store/index.js';
 

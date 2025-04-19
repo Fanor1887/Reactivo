@@ -1,9 +1,15 @@
-import { loginFailure, loginSuccess } from '../actions/authActions.js';
+import {
+  loginFailure,
+  loginSuccess,
+  logout,
+  logoutDispatch,
+} from '../actions/authActions.js';
 import { store } from '../store/index.js';
 import { loadContent, loadRoutes } from '../utils/storageUtils.js';
 import { renderSidebar } from '../components/common/sidebar.js';
 import { renderNavbar } from '../components/common/navbar.js';
 import { apiFetch } from './apiFetch.js';
+
 export const asyncAuth = async (values) => {
   try {
     const response = await fetch('/api/login', {
@@ -68,11 +74,24 @@ export async function logoutFromAPI() {
     console.log('Respuesta API logout:', response);
 
     if (response?.success) {
-      logoutDispatch();
+      store.dispatch(logout()); // ✅ Ahora sí se dispara el reducer y limpia el estado
+
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userRoles');
 
       // Carga la página de login sin recargar todo el sitio
-      await loadContent('/login', true);
 
+      const allRoutes = await loadRoutes();
+      const publicRoutes = allRoutes.filter((route) => !route.roles);
+
+      renderNavbar(publicRoutes);
+      renderSidebar(publicRoutes);
+      const loginRoute = allRoutes.find((r) => r.path === '/login') || {
+        path: '/login',
+        title: 'Login',
+      };
+      // Carga login sin recargar todo el sitio
+      await loadContent(loginRoute);
       // Limpiar el estado relacionado con la sesión
     } else {
       throw new Error(response?.error || 'No se pudo salir de la sesión.');

@@ -101,10 +101,23 @@ const authController = {
   logout: (req, res) => {
     req.session.destroy((err) => {
       if (err) {
-        return res.status(500).json({ error: 'Error al cerrar sesión' });
+        console.error('Error al cerrar sesión:', err);
+        return res
+          .status(500)
+          .json({ success: false, error: 'Error al cerrar sesión' });
       }
 
-      return res.json({ message: 'Sesión cerrada exitosamente' });
+      // Borrar la cookie de sesión
+      res.clearCookie('connect.sid', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Para producción, si usas HTTPS
+        sameSite: 'lax',
+      });
+
+      return res.json({
+        success: true,
+        message: 'Sesión cerrada exitosamente',
+      });
     });
   },
 };

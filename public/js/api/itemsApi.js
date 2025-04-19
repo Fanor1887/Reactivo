@@ -1,10 +1,7 @@
 import { store } from '../store/index.js';
 import { apiFetch } from './apiFetch.js';
 
-import { fetchRoutes } from '../utils/ajust.js';
 
-import { logoutDispatch } from '../actions/dispatchActions.js';
-import { loadContent } from '../utils/storageUtils.js';
 
 export async function deleteItemFromAPI(apiEndpoint, itemId) {
   try {
@@ -99,34 +96,6 @@ export async function deleteItemsFromAPI(apiEndpoint, itemIds) {
     }
   } catch (error) {
     console.error('Error al eliminar los ítems:', error);
-    return false;
-  }
-}
-
-export async function logoutFromAPI() {
-  try {
-    console.log('Saliendo de la sesión...');
-
-    const response = await apiFetch('/api/logout', 'POST');
-    console.log('Respuesta API logout:', response);
-
-    if (response?.success) {
-      logoutDispatch();
-
-      // Carga la página de login sin recargar todo el sitio
-      await loadContent('/login');
-      await fetchRoutes();
-
-      // Limpiar el estado relacionado con la sesión
-      localStorage.removeItem('jwt');
-      localStorage.removeItem('isAuthenticated');
-      localStorage.removeItem('userRoles');
-      localStorage.removeItem('items');
-    } else {
-      throw new Error(response?.error || 'No se pudo salir de la sesión.');
-    }
-  } catch (error) {
-    console.error('Error al cerrar sesión:', error);
     return false;
   }
 }

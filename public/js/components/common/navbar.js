@@ -1,4 +1,3 @@
-import { store } from '../../store/index.js';
 import { toggleSidebar } from '../../utils/index.js';
 import { loadContent } from '../../utils/storageUtils.js';
 
@@ -43,7 +42,7 @@ export function renderNavbar(
 
     a.addEventListener('click', (e) => {
       e.preventDefault();
-      onItemClick ? onItemClick(route) : loadContent(route);
+      loadContent(route);
       if (window.innerWidth <= 768) toggleSidebar();
     });
 
@@ -56,7 +55,7 @@ export function renderNavbar(
 }
 
 // Función para suscribirse al store y actualizar el navbar cuando las rutas cambien
-export function subscribeNavbar() {
+export function subscribeNavbar(store) {
   store.subscribe(() => {
     const { routes } = store.getState().router;
     renderNavbar(routes); // Re-renderizar el navbar con las rutas actualizadas

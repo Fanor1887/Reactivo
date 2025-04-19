@@ -38,7 +38,7 @@ export const executeScripts = (container) => {
 };
 
 export async function loadRoutes() {
-  const response = await fetch(`${baseEndpoint.routeEndpoint}`);
+  const response = await fetch('/api/routes');
 
   const data = await response.json();
   console.log('routesApi', data);

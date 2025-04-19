@@ -40,7 +40,7 @@ export function renderSidebar(routes) {
       await loadContent(route);
 
       // Guardar la ruta activa
-      store.dispatch({ type: 'SET_CURRENT_PATH', payload: route.path });
+      store.dispatch({ type: 'SET_ROUTE', payload: route.path });
       localStorage.setItem('currentRoute', route.path);
 
       // Re-renderizar para aplicar el "active"

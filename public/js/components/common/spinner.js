@@ -43,7 +43,7 @@ export function showSpinner() {
   }
 
   // 💡 Centramos respecto al contenedor #content
-  const contentRect = main.getBoundingClientRect();
+  const contentRect = content.getBoundingClientRect();
   const spinnerWidth = spinner.offsetWidth;
 
   const leftPos = contentRect.left + contentRect.width / 2 - spinnerWidth / 2;

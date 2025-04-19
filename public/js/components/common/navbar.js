@@ -34,8 +34,10 @@ export function renderNavbar(routes) {
     // ✅ Marcar como activo si coincide con la ruta actual
     if (route.path === currentRoute) {
       a.classList.add('active');
+      console.log(`✅ Ruta activa detectada: ${route.path}`);
+    } else {
+      console.log(`❌ Ruta NO activa: ${route.path}`);
     }
-
     a.addEventListener('click', (e) => {
       e.preventDefault();
 
@@ -46,7 +48,7 @@ export function renderNavbar(routes) {
       renderNavbar(routes);
       loadContent(route);
 
-      if (window.innerWidth <= 768) toggleSidebar('navbar');
+      // if (window.innerWidth <= 768) toggleSidebar('navbar');
     });
 
     li.appendChild(a);

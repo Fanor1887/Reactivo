@@ -26,7 +26,7 @@ export async function init() {
 
     store.dispatch({ type: 'SET_ROUTE', payload: route.path });
     localStorage.setItem('currentRoute', route.path);
-    // loadContent(route, false);
+    loadContent(route, false);
   } catch (err) {
     console.error('❌ Error en init():', err);
   }

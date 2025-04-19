@@ -8,7 +8,7 @@ export function renderSidebar(routes) {
 
   const { currentRoute } =
     store.getState().router || localStorage.getItem('currentRoute');
-
+  console.log('currentPath', currentRoute);
   // 🔹 Toolbar
   const toolbar = document.createElement('div');
   toolbar.className = 'sidebar-toolbar';
@@ -44,10 +44,6 @@ export function renderSidebar(routes) {
       // Re-renderizar para aplicar el "active"
       renderSidebar(routes);
       await loadContent(route);
-
-      if (window.innerWidth <= 768) {
-        toggleSidebar('sidebar'); // Esto cierra el sidebar
-      }
     });
 
     li.appendChild(a);

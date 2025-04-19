@@ -6,12 +6,11 @@
   gap: 20px; /* Espacio entre los elementos */
 }
 
-/* .navbar-item {
+.navbar-item {
   display: inline-block;
-} */
+}
 
 .navbar-link {
-  display: block;
   padding: 0.6rem 1rem;
   background-color: #2d3748;
   color: #e5e7eb;
@@ -25,11 +24,11 @@
   color: white; /* Texto blanco */
 }
 
-.navbar-link:active {
+.navbar-link.active {
   background-color: #3b82f6;
   color: white;
   font-weight: bold;
-  border-left: 4px solid white;
+  border: 2px solid white;
 }
 
 /* Media Query para Responsividad */

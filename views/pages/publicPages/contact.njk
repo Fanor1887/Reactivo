@@ -1,7 +1,78 @@
-{% extends "index.njk" %} {% block content %} {#
-<h1>{{ title }}</h1>
+{% extends "index.njk" %} {% block content %} {% set typeEndpoint = "Specialty"
+%}
 
-#}
+<h2>Probando filtros en cliente para tipo: {{ typeEndpoint }}</h2>
+<div
+  id="actions"
+  style="margin-bottom: 20px"
+>
+  <button id="btn-allowed">Mostrar Allowed</button>
+  <button id="btn-excluded">Mostrar Excluded</button>
+  <button id="btn-roles">Mostrar por Roles</button>
+  <button id="btn-private">Mostrar Privados</button>
+</div>
 
-<h1>Fanor Contacty</h1>
+<div id="nav-test"></div>
+<!-- Aquí se mostrará el navbar personalizado -->
+
+<div id="result"></div>
+
+<script type="module">
+  import {
+    filterByAllowedKeys,
+    filterByExcludedKeys,
+    filterByRoles,
+    filterByBooleanFlag,
+  } from '/js/utils/filter.js';
+
+  import { sampleRoutes } from '/js/mockup/index.js';
+  import { customNavbar } from '/js/components/custom/customNavbar.js'; // Importa el navbar
+  import { createAppBar } from '/js/components/custom/appBar.js'; // Importa el navbar
+  import { store } from '/js/store/index.js';
+  const resultDiv = document.getElementById('result');
+
+  const userRoles = ['editor'];
+  const allowedPaths = ['/dashboard', '/users'];
+  const excludedPaths = ['/contact', '/about'];
+
+  function showResults(title, data) {
+    resultDiv.innerHTML = `
+          <h4>${title}</h4>
+          <pre>${JSON.stringify(data, null, 2)}</pre>
+        `;
+  }
+
+  // Llamamos a customNavbar y le pasamos la data para mostrar en #nav-test
+  customNavbar(sampleRoutes, 'nav-test'); // Aquí estamos pasándole las rutas de ejemplo y el contenedor 'nav-test'
+
+  // Eventos de los botones para realizar los filtros
+  document.getElementById('btn-allowed').addEventListener('click', () => {
+    const data = filterByAllowedKeys(sampleRoutes, allowedPaths);
+    showResults('✅ Allowed Keys:', data);
+    customNavbar(data, 'nav-test'); // Actualiza el navbar con los resultados filtrados
+  });
+
+  document.getElementById('btn-excluded').addEventListener('click', () => {
+    const data = filterByExcludedKeys(sampleRoutes, excludedPaths);
+    showResults('❌ Excluded Keys:', data);
+    customNavbar(data, 'nav-test'); // Actualiza el navbar con los resultados filtrados
+  });
+
+  document.getElementById('btn-roles').addEventListener('click', () => {
+    const data = filterByRoles(sampleRoutes, userRoles);
+    showResults('🔑 By Roles:', data);
+    customNavbar(data, 'nav-test'); // Actualiza el navbar con los resultados filtrados
+  });
+
+  document.getElementById('btn-private').addEventListener('click', () => {
+    const data = filterByBooleanFlag(sampleRoutes, 'private');
+    showResults('🔒 Private Only:', data);
+    customNavbar(data, 'nav-test'); // Actualiza el navbar con los resultados filtrados
+  });
+
+  // Renderizar la navbar con las rutas por defecto al inicio
+  const defaultData = filterByAllowedKeys(sampleRoutes, allowedPaths);
+  showResults('✅ Allowed Keys (Inicial):', defaultData);
+  customNavbar(defaultData, 'nav-test'); // Inicializa el navbar
+</script>
 {% endblock %}

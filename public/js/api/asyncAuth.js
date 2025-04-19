@@ -3,7 +3,7 @@ import { store } from '../store/index.js';
 import { loadContent, loadRoutes } from '../utils/storageUtils.js';
 import { renderSidebar } from '../components/common/sidebar.js';
 import { renderNavbar } from '../components/common/navbar.js';
-
+import { apiFetch } from './apiFetch.js';
 export const asyncAuth = async (values) => {
   try {
     const response = await fetch('/api/login', {

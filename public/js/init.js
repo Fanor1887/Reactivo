@@ -1,41 +1,29 @@
-// init.js
-import { renderFooter } from './components/common/footer.js';
 import { renderNavbar } from './components/common/navbar.js';
 import { renderSidebar } from './components/common/sidebar.js';
-import { loadRoutes, loadContent } from './utils/storageUtils.js';
+import { loadContent, loadRoutes } from './utils/storageUtils.js';
 import { store } from './store/index.js';
 
-const footerLinks = [
-  { label: 'Acerca de', url: '/about' },
-  { label: 'Contacto', url: '/contact' },
-  { label: 'Términos', url: '/terms' },
-  { label: 'Privacidad', url: '/privacy' },
-];
+let unsubscribe;
 
 export async function init() {
   try {
-    const routes = await loadRoutes(); // Obtener las rutas desde el servidor
+    const routes = await loadRoutes();
 
-    // Renderizar navbar, sidebar, footer
-    renderNavbar(routes);
-    renderSidebar(routes);
-    renderFooter(footerLinks);
+    if (!routes || routes.length === 0) {
+      console.error('❌ No se encontraron rutas.');
+      return;
+    }
 
-    // Obtener ruta actual desde la URL
-    const currentPath = window.location.pathname;
+    store.dispatch({ type: 'SET_ROUTES', payload: routes });
 
-    // Buscar esa ruta en las definidas
-    const route = routes.find((r) => r.path === currentPath) || routes[0];
+    // 🚦 Ruta actual
+    const currentRoute = window.location.pathname;
+    const route = routes.find((r) => r.path === currentRoute) || routes[0];
 
-    // Establecer en el store
     store.dispatch({ type: 'SET_ROUTE', payload: route.path });
-
-    // Guardar en localStorage (opcional)
     localStorage.setItem('currentRoute', route.path);
-
-    // Cargar el contenido según la ruta actual
-    await loadContent(route, false);
+    loadContent(route, false);
   } catch (err) {
-    console.error('❌ Error al cargar las rutas o el contenido:', err);
+    console.error('❌ Error en init():', err);
   }
 }

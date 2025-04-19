@@ -172,7 +172,7 @@
     {
       "path": "/users",
       "title": "Usuarios",
-      "view": "pages/privatePages/users/user.njk",
+      "view": "pages/users/user.njk",
       "roleAlias": ["administrador", "doctor"],
       "private": true,
       "subroutes": [

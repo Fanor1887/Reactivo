@@ -6,12 +6,14 @@ export function renderSidebar(routes) {
   const sidebar = document.getElementById('sidebar');
   sidebar.innerHTML = ''; // Limpiar
 
-  // 🔹 Toolbar del sidebar (parte superior)
+  const { currentRoute } =
+    store.getState().router || localStorage.getItem('currentRoute');
+
+  // 🔹 Toolbar
   const toolbar = document.createElement('div');
   toolbar.className = 'sidebar-toolbar';
-  toolbar.textContent = 'Menú'; // Aquí puedes poner un logo, usuario, etc.
+  toolbar.textContent = 'Menú';
 
-  // 🔹 Contenedor de links (contenido del sidebar)
   const nav = document.createElement('nav');
   nav.className = 'sidebar-content';
 
@@ -27,14 +29,26 @@ export function renderSidebar(routes) {
     a.textContent = route.title;
     a.className = 'sidebar-link';
 
-    a.addEventListener('click', (e) => {
+    // ✅ Activar si es la ruta actual
+    if (route.path === currentRoute) {
+      a.classList.add('active');
+    }
+
+    a.addEventListener('click', async (e) => {
       e.preventDefault();
 
-      loadContent(route);
+      await loadContent(route);
 
-      //   if (window.innerWidth <= 768) {
-      toggleSidebar(); // Esto cierra el sidebar
-      //   }
+      // Guardar la ruta activa
+      store.dispatch({ type: 'SET_CURRENT_PATH', payload: route.path });
+      localStorage.setItem('currentRoute', route.path);
+
+      // Re-renderizar para aplicar el "active"
+      renderSidebar(routes);
+
+      if (window.innerWidth <= 768) {
+        toggleSidebar(); // Esto cierra el sidebar
+      }
     });
 
     li.appendChild(a);
@@ -43,13 +57,17 @@ export function renderSidebar(routes) {
 
   nav.appendChild(ul);
 
-  // 🔹 Footer del sidebar
   const footer = document.createElement('div');
   footer.className = 'sidebar-footer';
   footer.textContent = '© 2025 Tu App';
 
-  // 🔹 Añadir todo al sidebar
   sidebar.appendChild(toolbar);
   sidebar.appendChild(nav);
   sidebar.appendChild(footer);
+}
+export function subscribeSidebar(store) {
+  store.subscribe(() => {
+    const { routes } = store.getState().router;
+    renderSidebar(routes); // Re-renderizar el sidebar con las rutas actualizadas
+  });
 }

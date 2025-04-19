@@ -1,9 +1,24 @@
+import { store } from '../../store/index.js';
 import { toggleSidebar } from '../../utils/index.js';
 import { loadContent } from '../../utils/storageUtils.js';
 
-export function renderNavbar(routes) {
-  const navbar = document.getElementById('navbar');
+/**
+ * Renderiza una navbar genérica con base en rutas.
+ * @param {Array} routes - Rutas a renderizar.
+ * @param {Object} options - Opcional. Funciones de callback o clases.
+ */
+export function renderNavbar(
+  routes = [],
+  options = {},
+  containerId = 'navbar'
+) {
+  const { onItemClick, className = '' } = options;
+
+  const navbar = document.getElementById(containerId);
+  if (!navbar) return;
+
   navbar.innerHTML = '';
+  navbar.className = `navbar-container ${className}`;
 
   const leftContainer = document.createElement('div');
   leftContainer.className = 'navbar-left';
@@ -23,12 +38,12 @@ export function renderNavbar(routes) {
 
     const a = document.createElement('a');
     a.href = route.path;
-    a.textContent = route.title;
+    a.textContent = route.title || route.path;
     a.className = 'navbar-link';
 
     a.addEventListener('click', (e) => {
       e.preventDefault();
-      loadContent(route);
+      onItemClick ? onItemClick(route) : loadContent(route);
       if (window.innerWidth <= 768) toggleSidebar();
     });
 
@@ -38,4 +53,12 @@ export function renderNavbar(routes) {
 
   navbar.appendChild(leftContainer);
   navbar.appendChild(ul);
+}
+
+// Función para suscribirse al store y actualizar el navbar cuando las rutas cambien
+export function subscribeNavbar() {
+  store.subscribe(() => {
+    const { routes } = store.getState().router;
+    renderNavbar(routes); // Re-renderizar el navbar con las rutas actualizadas
+  });
 }

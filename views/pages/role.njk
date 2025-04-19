@@ -3,5 +3,17 @@
 
 #}
 
-<h1>DashboardROLE</h1>
+<script type="module">
+  import { customNavbar } from '/js/components/custom/customNavbar.js'; // Importa el navbar
+  import { createAppBar } from '/js/components/custom/appBar.js'; // Importa el navbar
+  import { logoutFromAPI } from '/js/api/asyncAuth.js';
+  async function handleLogout() {
+    logoutFromAPI();
+  }
+  createAppBar('Landing Page', [
+    { text: 'Dashboard', href: '/dashboard' }, // Navegación estándar
+    { text: 'Perfil', path: '/login' }, // SPA path
+    { text: 'Cerrar sesión', onAction: () => handleLogout() }, // Evento personalizado
+  ]);
+</script>
 {% endblock %}

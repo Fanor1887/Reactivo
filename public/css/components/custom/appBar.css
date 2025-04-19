@@ -1,0 +1,93 @@
+/* Estilo para el AppBar */
+.app-bar {
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Contenedor dentro de la AppBar */
+  .app-bar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  
+  /* Logo */
+  .app-bar .logo a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  /* Menú de navegación */
+  .app-bar .nav-links ul {
+    display: flex;
+    list-style: none;
+  }
+  
+  .app-bar .nav-links li {
+    margin: 0 15px;
+  }
+  
+  .app-bar .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  
+  .app-bar .nav-links a:hover {
+    color: #ff4081;
+  }
+  
+  /* Menú de hamburguesa para móviles */
+  .app-bar .menu-toggle {
+    display: none;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+  }
+  
+  /* Estilos para pantallas más pequeñas */
+  @media (max-width: 768px) {
+    .app-bar .nav-links {
+      display: none;
+      width: 100%;
+      background-color: #333;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      text-align: center;
+      padding: 10px 0;
+    }
+  
+    .app-bar .nav-links.active {
+      display: block;
+    }
+  
+    .app-bar .nav-links ul {
+      display: block;
+    }
+  
+    .app-bar .nav-links li {
+      margin: 10px 0;
+    }
+  
+    .app-bar .menu-toggle {
+      display: block;
+    }
+  }
+  
+  main {
+    padding: 20px;
+  }

@@ -1,4 +1,15 @@
-
+#nav-test {
+  position: sticky;
+  top: 0;
+  background-color: #0b6ed1;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 999;
+  transition: transform 0.3s ease;
+  border: 2px solid white;
+}
 .navbar-list {
   list-style-type: none; /* Eliminar puntos de la lista */
   margin: 0;

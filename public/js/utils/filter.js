@@ -1,4 +1,4 @@
-import { store } from '../store/index.js';
+
 
 export function filterKeys(object, excludedKeys, allowedKeys = null) {
   return Object.keys(object)
@@ -23,36 +23,22 @@ export function filterKeys(object, excludedKeys, allowedKeys = null) {
  * @param {Array} includedKeys - Lista de claves permitidas
  * @param {String} field - Campo del objeto a comparar (por defecto 'path')
  */
-export function filterByAllowedKeys(items, includedKeys, field = 'path') {
-  return items.filter((item) => includedKeys.includes(item[field]));
-}
-
-/**
- * Filtra items que NO están en una lista de claves (exclusión)
- * @param {Array} items - Array de objetos
- * @param {Array} excludedKeys - Lista de claves a excluir
- * @param {String} field - Campo del objeto a comparar (por defecto 'path')
- */
-export function filterByExcludedKeys(items, excludedKeys, field = 'path') {
-  return items.filter((item) => !excludedKeys.includes(item[field]));
-}
-
-/**
- * Filtra items que no tienen campo `roles` o tienen alguno que coincida
- * @param {Array} items - Array de objetos
- * @param {Array} userRoles - Lista de roles del usuario
- */
-export function filterByRoles(items, userRoles = []) {
-  return items.filter(
-    (item) => !item.roles || item.roles.some((role) => userRoles.includes(role))
+export function filterByKeys(items, keys, field = '', exclude = false) {
+  return items.filter(item =>
+    exclude
+      ? !keys.includes(item[field])  // si exclude es true, excluye los que están en keys
+      : keys.includes(item[field])   // si exclude es false (o no se pasa), incluye solo los que están en keys
   );
 }
 
+
 /**
- * Filtra items que tienen propiedad booleana activa (por defecto 'private')
- * @param {Array} items - Array de objetos
- * @param {String} flag - Propiedad booleana (por defecto 'private')
+ * Filtra items que tienen una propiedad booleana con cierto valor
+ * @param {Array} items - Lista de objetos
+ * @param {String} flag - Nombre del campo booleano (por defecto 'private')
+ * @param {Boolean} flagValue - Valor a comparar (por defecto true)
+ * @returns {Array}
  */
-export function filterByBooleanFlag(items, flag = 'private') {
-  return items.filter((item) => item[flag] === true);
+export function filterByBooleanFlag(items, flag = '', flagValue = false) {
+  return items.filter((item) => item[flag] === flagValue)
 }

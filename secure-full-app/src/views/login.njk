@@ -1,0 +1,20 @@
+{% extends "layout.njk" %} {% block content %}
+<h1>Iniciar Sesión</h1>
+<p>Ruta: /login</p>
+<button id="my-Button">Inicar session</button>
+    <div id="nonce-value">
+      <p>El valor del nonce es: {{ nonce }}</p>
+    </div>
+<!-- Aquí puedes usar el nonce diferente al del layout -->
+<script
+  type="module"
+  nonce="{{ nonce }}"
+  defer
+>
+  // Lógica cuando se hace clic en el botón
+  document.getElementById('my-Button').addEventListener('click', () => {
+    console.log('¡Botón clickeado nosotrossdsdadsd');
+    alert('¡Has hecho clic endadasdasdnotross el botón!');
+  });
+</script>
+{% endblock %}

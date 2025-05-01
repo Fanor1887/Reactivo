@@ -1,20 +1,30 @@
-{% extends "layout.njk" %} {% block content %}
-<h1>Iniciar Sesión</h1>
-<p>Ruta: /login</p>
-<button id="my-Button">Inicar session</button>
-    <div id="nonce-value">
-      <p>El valor del nonce es: {{ nonce }}</p>
-    </div>
-<!-- Aquí puedes usar el nonce diferente al del layout -->
-<script
-  type="module"
-  nonce="{{ nonce }}"
-  defer
+{# {% extends "layout.njk" %} {% block content %}
+
+<form
+  method="POST"
+  action="/login"
 >
-  // Lógica cuando se hace clic en el botón
-  document.getElementById('my-Button').addEventListener('click', () => {
-    console.log('¡Botón clickeado nosotrossdsdadsd');
-    alert('¡Has hecho clic endadasdasdnotross el botón!');
-  });
-</script>
-{% endblock %}
+  <label for="username">Usuario:</label>
+  <input
+    type="text"
+    id="username"
+    name="username"
+    required
+  />
+
+  <label for="password">Contraseña:</label>
+  <input
+    type="password"
+    id="password"
+    name="password"
+    required
+  />
+
+  <button type="submit">Iniciar sesión</button>
+</form>
+<p>Si no tienes cuenta, contacta con el administrador.</p>
+{% endblock %} #} {% extends "layout.njk" %}{% block content %}
+
+{%set pageNjk = 'login'%}
+{%include
+"index.njk" %} {% endblock %}

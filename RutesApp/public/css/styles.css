@@ -1,0 +1,78 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background-color: #f4f4f4;
+}
+
+#sidebar {
+  width: 240px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: linear-gradient(180deg, #090413 0%, #1c0a47 100%);
+  color: white;
+  height: 100%;
+  padding-top: 20px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+}
+
+#sidebar .sidebar-toolbar {
+  padding: 16px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#sidebar .sidebar-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#sidebar .sidebar-content li {
+  margin: 8px 0;
+}
+
+#sidebar .sidebar-content a {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: white;
+  transition: background 0.2s;
+}
+
+#sidebar .sidebar-content a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-left: 4px solid #ffffff;
+  padding-left: 16px;
+}
+
+#sidebar .sidebar-footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+#content {
+  margin-left: 260px;
+  padding: 30px;
+  min-height: 100vh;
+}
+ul.level-0 {
+  padding-left: 0;
+}
+
+ul.level-1 {
+  padding-left: 15px;
+}
+
+ul.level-2 {
+  padding-left: 30px;
+}
+
+/* Y así sucesivamente... */

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="nonce"
+      content="{{ nonce }}"
+    />
+    <title>{{ title }}</title>
+    <link
+      rel="stylesheet"
+      href="/css/styles.css"
+    />
+  </head>
+  <body>
+    <div id="sidebar">
+      <div class="sidebar-toolbar">Menú</div>
+      <div class="sidebar-content">
+        <ul id="sidebar-links"></ul>
+      </div>
+    </div>
+
+    <div id="main">
+      <div id="content">{% block content %}{% endblock %}</div>
+      <footer id="footer"></footer>
+    </div>
+
+    <!-- Script global con el nonce -->
+    <script
+      type="module"
+      nonce="{{ nonce }}"
+      src="/js/main.js"
+      defer
+    ></script>
+  </body>
+</html>

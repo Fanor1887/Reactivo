@@ -1,0 +1,78 @@
+[
+  {
+    "path": "/home",
+    "view": "home.njk",
+    "title": "Inicio",
+    "mdname": "Público",
+    "private": false,
+    "children": [
+      {
+        "path": "/specialties",
+        "title": "Especialidades",
+        "view": "specialties.njk",
+        "private": false,
+        "children": [
+          {
+            "path": "/dental",
+            "title": "Dental",
+            "view": "dental.njk",
+            "private": false
+          },
+          {
+            "path": "/medical",
+            "title": "Medical",
+            "view": "medical.njk",
+            "private": false,
+            "children": [
+              {
+                "path": "/adiology",
+                "title": "Radiología",
+                "view": "radiology.njk",
+                "private": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/about",
+    "view": "about.njk",
+    "title": "Sobre Nosotros",
+    "mdname": "Público",
+    "private": false
+  },
+  {
+    "path": "/dashboard",
+    "view": "dashboard/index.njk",
+    "title": "Tablero",
+    "mdname": "Privado",
+    "private": true,
+    "children": [
+      {
+        "path": "/dashboard/settings",
+        "view": "dashboard/settings.njk",
+        "title": "Configuraciones",
+        "mdname": "Configuraciones",
+        "private": true
+      },
+      {
+        "path": "/dashboard/profile",
+        "view": "dashboard/profile.njk",
+        "title": "Perfil",
+        "mdname": "Usuarios",
+        "private": true,
+        "children": [
+          {
+            "path": "/dashboard/profile/edit",
+            "view": "dashboard/profile/edit.njk",
+            "title": "Editar Perfil",
+            "mdname": "Usuarios",
+            "private": true
+          }
+        ]
+      }
+    ]
+  }
+]

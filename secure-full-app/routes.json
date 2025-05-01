@@ -1,6 +1,6 @@
 [
   {
-    "path": "/",
+    "path": "/home",
     "title": "Inicio",
     "view": "home.njk",
     "private": false,
@@ -43,7 +43,7 @@
   },
   {
     "path": "/login",
-    "title": "Login",
+    "title": "Iniciar Sesión",
     "view": "login.njk",
     "private": false
   },
@@ -51,6 +51,7 @@
     "path": "/dashboard",
     "title": "Dashboard",
     "view": "dashboard.njk",
-    "private": true
+    "private": true,
+    "roles": ["admin", "doctor"]
   }
 ]

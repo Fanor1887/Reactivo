@@ -1,8 +1,12 @@
 // setupSidebar.js
 export function setupSidebar(routes) {
-  const menuList = document.getElementById('menu-list');
+  const menuList = document.getElementById('sidebar');
   menuList.innerHTML = ''; // Limpiar antes de cargar
 
+  const nav = document.createElement('nav');
+  nav.className = 'sidebar-content';
+
+  // Función recursiva para construir el menú
   const buildMenu = (routes) => {
     const ul = document.createElement('ul');
 
@@ -13,15 +17,21 @@ export function setupSidebar(routes) {
       a.textContent = route.title;
       li.appendChild(a);
 
+      // Si la ruta tiene subrutas, las agregamos recursivamente
       if (route.subroutes && route.subroutes.length > 0) {
-        li.appendChild(buildMenu(route.subroutes));
+        const subMenu = buildMenu(route.subroutes); // Llamada recursiva para las subrutas
+        li.appendChild(subMenu); // Agregamos las subrutas al li
       }
 
       ul.appendChild(li);
     });
 
-    return ul;
+    return ul; // Devolvemos la lista de rutas/subrutas
   };
 
-  menuList.appendChild(buildMenu(routes));
+  // Construir el menú con las rutas y subrutas
+  nav.appendChild(buildMenu(routes));
+
+  // Finalmente, agregar el nav completo al menú principal
+  menuList.appendChild(nav);
 }

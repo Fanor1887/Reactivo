@@ -1,4 +1,21 @@
 {% extends "layout.njk" %} {% block content %}
-<h1>Dental</h1>
+
+<!-- Agregar un botón -->
+<button
+  id="myButton"
+  data-action="login"
+>
+  Login
+</button>
+<button
+  id="myButton"
+  data-action="home"
+>
+  Home
+</button>
+
+<div id="nonce-value">
+  <p>El valor del nonce es: {{ nonce }}</p>
+</div>
 
 {% endblock %}

@@ -1,0 +1,56 @@
+[
+  {
+    "path": "/",
+    "title": "Inicio",
+    "view": "home.njk",
+    "private": false,
+    "subroutes": [
+      {
+        "path": "/specialties",
+        "title": "Especialidades",
+        "view": "specialties.njk",
+        "private": false,
+        "subroutes": [
+          {
+            "path": "/dental",
+            "title": "Dental",
+            "view": "dental.njk",
+            "private": false
+          },
+          {
+            "path": "/medical",
+            "title": "Medical",
+            "view": "medical.njk",
+            "private": false,
+            "subroutes": [
+              {
+                "path": "/radiology",
+                "title": "Radiología",
+                "view": "radiology.njk",
+                "private": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "/contact",
+        "title": "Contacto",
+        "view": "contact.njk",
+        "private": false
+      }
+    ]
+  },
+  {
+    "path": "/login",
+    "title": "Login",
+    "view": "login.njk",
+    "private": false
+  },
+  {
+    "path": "/dashboard",
+    "title": "Dashboard",
+    "view": "dashboard.njk",
+    "private": true
+  }
+]

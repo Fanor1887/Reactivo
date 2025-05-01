@@ -6,14 +6,36 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
+    <meta
+      name="nonce"
+      content="{{ nonce }}"
+    />
     <title>{{ title }}</title>
   </head>
   <body>
-    <div>
-      <h1>{{ title }}</h1>
-      <ul id="menu-list"></ul>
+
+      <div id="sidebar">
+        <!-- Aquí van los <ul> con los links -->
+      </div>
+      <div class="sidebar-footer">© 2025 Tu App</div>
     </div>
-    <div id="content-area"></div>
-    <script src="/{{ scriptPath }}"></script>
+    <nav id="navbar">
+      <!-- Las rutas se cargarán dinámicamente aquí -->
+    </nav>
+    <!-- Menú de rutas dinámicas -->
+    <div id="main">
+      <!-- Aquí centramos el spinner -->
+      <div id="content-area">
+        {% block content %}
+        <!-- Aquí irá el contenido dinámico -->
+
+        {% endblock %}
+      </div>
+    
+    <script
+      type="module"
+      nonce="{{ nonce }}"
+      src="/{{ scriptPath }}"
+    ></script>
   </body>
 </html>

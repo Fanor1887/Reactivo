@@ -1,7 +1,9 @@
+{% extends "layout.njk" %} {% block content %}
 
-{% extends "layout.njk" %}
-{% block content %}
-  <h1>Dashboard</h1>
- 
+<!-- Agregar un botón -->
+<button id="my-Button">Haz clic Dentl aquí</button>
+<div id="nonce-value">
+  <p>El valor del nonce es: {{ nonce }}</p>
+</div>
+
 {% endblock %}
-    

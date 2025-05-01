@@ -1,0 +1,60 @@
+{% extends "layout.njk" %} {% block content %}
+<h1>Registrar usuario</h1>
+<form id="registerForm">
+  <input
+    name="username"
+    placeholder="Usuario"
+    required
+  />
+  <input
+    name="password"
+    type="password"
+    placeholder="Clave"
+    required
+  />
+  <button type="submit">Registrar</button>
+</form>
+
+<p>¿Ya tienes cuenta? <a href="/login">Inicia sesión aquí</a></p>
+
+<!-- Spinner de carga -->
+<div
+  id="loadingSpinner"
+  style="display: none"
+>
+  <p>Cargando...</p>
+</div>
+
+<script>
+  document
+    .getElementById('registerForm')
+    .addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        username: e.target.username.value,
+        password: e.target.password.value,
+      };
+
+      // Mostrar spinner
+      document.getElementById('loadingSpinner').style.display = 'block';
+
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+
+      // Ocultar spinner
+      document.getElementById('loadingSpinner').style.display = 'none';
+
+      if (res.ok) {
+        alert('Usuario registrado. Ahora puedes iniciar sesión.');
+        window.location.href = '/login'; // Redirige al login después de registrar
+      } else {
+        alert('Error: ' + result.message);
+      }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,6 @@
+{
+  "watch": ["src"],
+  "ext": "js,njk,css",
+  "ignore": ["dist"],
+  "exec": "npm run build && node src/app.js"
+}

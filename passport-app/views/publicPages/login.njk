@@ -1,0 +1,58 @@
+
+{% extends "layout.njk" %} {% block content %}
+<h1>Iniciar sesión</h1>
+<form id="loginForm">
+  <input
+    name="username"
+    placeholder="Usuario"
+    required
+  />
+  <input
+    name="password"
+    type="password"
+    placeholder="Clave"
+    required
+  />
+  <button type="submit">Iniciar sesión</button>
+</form>
+
+<p>Aún no tienes cuenta? <a href="/register">Regístrate aquí</a></p>
+
+<!-- Spinner de carga -->
+<div
+  id="loadingSpinner"
+  style="display: none"
+>
+  <p>Cargando...</p>
+</div>
+
+<script>
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = {
+      username: e.target.username.value,
+      password: e.target.password.value,
+    };
+
+    // Mostrar spinner
+    document.getElementById('loadingSpinner').style.display = 'block';
+
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+
+    // Ocultar spinner
+    document.getElementById('loadingSpinner').style.display = 'none';
+
+    if (res.ok) {
+      window.location.href = '/dashboard'; // Redirige al Dashboard
+    } else {
+      alert('Error: ' + result.message);
+    }
+  });
+</script>
+{% endblock %}

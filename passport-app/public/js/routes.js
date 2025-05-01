@@ -1,60 +1,83 @@
+import { customIcon } from './components/custom/customIcon.js';
 import { debugLog } from './debug.js';
-
-// Función para cargar las rutas
-export async function loadRoutes() {
-  try {
-    const response = await fetch('/api/routes');
-    const routes = await response.json();
-
-    debugLog(`Rutas recibidas: ${JSON.stringify(routes, null, 2)}`, 'info');
-
-    const sidebarLinks = document.getElementById('sidebar-links');
-    if (!sidebarLinks) {
-      debugLog('No se encontró el contenedor #sidebar-links', 'error');
-      return;
+// components/menu/toggleSubMenu.js
+export function toggleSubMenu(currentSubMenu, currentTriangle, parentUl) {
+  // Cerrar todos los submenús del mismo nivel
+  Array.from(parentUl.children).forEach((siblingLi) => {
+    const siblingSubMenu = siblingLi.querySelector('ul');
+    const siblingTriangle = siblingLi.querySelector('span[data-triangle]');
+    if (siblingSubMenu && siblingSubMenu !== currentSubMenu) {
+      siblingSubMenu.style.display = 'none';
+      if (siblingTriangle) siblingTriangle.style.transform = 'rotate(0deg)';
     }
+  });
 
-    sidebarLinks.innerHTML = '';
-    const menu = generateRouteList(routes);
-    sidebarLinks.appendChild(menu);
-
-    debugLog('Menú lateral generado correctamente.', 'info');
-  } catch (err) {
-    debugLog(`Error al cargar rutas: ${err.message}`, 'error');
-  }
+  // Alternar visibilidad actual
+  const isVisible = currentSubMenu.style.display === 'block';
+  currentSubMenu.style.display = isVisible ? 'none' : 'block';
+  currentTriangle.style.transform = isVisible ? 'rotate(0deg)' : 'rotate(90deg)';
 }
-function generateRouteList(routes, level = 0) {
+
+
+
+
+// routes.js
+
+
+
+export function generateRouteList(routes, level = 0) {
   const ul = document.createElement('ul');
-  ul.classList.add(`level-${level}`); // Para agregar estilos específicos por nivel
+  ul.classList.add(`level-${level}`);
 
   routes.forEach((route) => {
     const li = document.createElement('li');
+    li.style.display = 'flex';
+    li.style.flexDirection = 'column';
+    li.style.padding = '4px 10px';
+
+    const header = document.createElement('div');
+    header.style.display = 'flex';
+    header.style.alignItems = 'center';
+    header.style.justifyContent = 'space-between';
+    header.style.gap = '6px';
+
     const a = document.createElement('a');
-    a.href = route.path;
+    a.href = route.path || '#';
     a.textContent = route.title || 'Sin título';
-    li.appendChild(a);
+    a.style.flexGrow = '1';
+    a.style.textDecoration = 'none';
+    a.style.color = '#ddd';
+    a.style.display = 'flex';
+    a.style.alignItems = 'center';
+    a.style.gap = '6px';
 
-    // Si tiene subrutas, hacer que sea "expandible"
+    const leftIcon = customIcon('📁', 20, '#333');
+    a.prepend(leftIcon);
+
+    header.appendChild(a);
+
     if (route.children && route.children.length > 0) {
-      debugLog(
-        `Ruta ${route.path} tiene ${route.children.length} subrutas. Generando submenú...`,
-        'info'
-      );
-
-      // Crear un contenedor para el submenú
       const subMenu = generateRouteList(route.children, level + 1);
-      subMenu.style.display = 'none'; // Inicialmente ocultamos el submenú
+      subMenu.style.display = 'none';
 
-      // Crear el evento de clic para expandir/colapsar
-      a.style.cursor = 'pointer'; // Hacer que la ruta principal parezca clickeable
-      a.addEventListener('click', (event) => {
-        event.preventDefault(); // Evitar que la página se recargue
-        const isVisible = subMenu.style.display === 'block'; // Comprobar si el submenú está visible
-        subMenu.style.display = isVisible ? 'none' : 'block'; // Alternar la visibilidad
+      const triangle = document.createElement('span');
+      triangle.innerHTML = '▶';
+      triangle.dataset.triangle = 'true';
+      triangle.style.fontSize = '14px';
+      triangle.style.color = '#aaa';
+      triangle.style.cursor = 'pointer';
+      triangle.style.transition = 'transform 0.3s ease';
+
+      triangle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleSubMenu(subMenu, triangle, ul);
       });
 
-      // Añadir el submenú al padre
+      header.appendChild(triangle);
+      li.appendChild(header);
       li.appendChild(subMenu);
+    } else {
+      li.appendChild(header);
     }
 
     ul.appendChild(li);
@@ -62,3 +85,5 @@ function generateRouteList(routes, level = 0) {
 
   return ul;
 }
+
+

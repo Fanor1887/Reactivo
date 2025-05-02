@@ -12,11 +12,12 @@
     <div id="sidebar">
       <div class="sidebar-toolbar">Menú</div>
       <div class="sidebar-content">
-        <ul id="sidebar-links"></ul>
+        <div id="sidebar-links"></div>
       </div>
     </div>
 
     <div id="main">
+     <header id="appHeader"></header> <!-- Puede haber varios -->
       <div id="content">{% block content %}{% endblock %}</div>
       <footer id="footer"></footer>
     </div>

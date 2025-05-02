@@ -81,3 +81,39 @@ body {
   font-weight: bold;
   border-left: 4px solid #ffd700; /* Resaltado */
 }
+/* 
+.draggable-element {
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.draggable-element:active {
+  cursor: grabbing;
+}
+
+.draggable-element:hover {
+  opacity: 0.8;
+}
+
+.drop-container.highlight {
+  background-color: rgba(0,0,0,0.1);
+  border: 2px dashed #6200ea;
+} */
+
+.free-app-bar {
+  position: relative;
+  user-select: none;
+}
+
+.draggable-item {
+  transition: transform 0.2s ease;
+}
+
+.draggable-item:hover {
+  opacity: 0.9;
+}
+
+.draggable-item:active {
+  cursor: grabbing;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
